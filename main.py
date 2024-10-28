@@ -50,7 +50,7 @@ def massProcessing():
                 masked_img = cv2.bitwise_and(img, img, mask=mask)
 
                 # Подсчет суммы значений всех пикселей
-                sum_pixel_values = np.sum(masked_img)
+                sum_pixel_values = np.sum(masked_img[:, :, 1])
 
                 print("Сумма значений всех пикселей в контуре:", sum_pixel_values)
                 points.clear()
@@ -91,7 +91,7 @@ def massProcessing():
                 masked_img = cv2.bitwise_and(img, img, mask=mask)
 
                 # Подсчет суммы значений всех пикселей
-                sum_pixel_values = np.sum(masked_img)
+                sum_pixel_values = np.sum(masked_img[:, :, 1])
 
                 print("Сумма значений всех пикселей в контуре:", sum_pixel_values)
                 points.clear()
@@ -129,7 +129,7 @@ def massProcessing():
                 masked_img = cv2.bitwise_and(img, img, mask=mask)
 
                 # Подсчет суммы значений всех пикселей
-                sum_pixel_values = np.sum(masked_img)
+                sum_pixel_values = np.sum(masked_img[:, :, 1])
 
                 print("Сумма значений всех пикселей в контуре:", sum_pixel_values)
                 points.clear()

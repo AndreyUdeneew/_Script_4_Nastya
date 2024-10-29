@@ -15,7 +15,7 @@ import numpy as np
 # from xlsxwriter import Workbook
 
 def massProcessing():
-    global fileNames, img
+    global fileNames, img, temp_img
     fileNames = askopenfilenames(parent=window)
     fileNames = sorted(fileNames)
     output = format(text2.get("1.0",'end-1c'))
@@ -29,6 +29,7 @@ def massProcessing():
                 writer = csv.writer(Kf, delimiter=';')
                 print(fileNames[i])
                 img = cv2.imread(fileNames[i])
+                temp_img = img.copy()  # Создаем копию для рисования
                 cv2.namedWindow('Image')
                 cv2.setMouseCallback('Image', draw_circle)
 
@@ -70,6 +71,7 @@ def massProcessing():
                 writer = csv.writer(Kf, delimiter=';')
                 print(fileNames[i])
                 img = cv2.imread(fileNames[i])
+                temp_img = img.copy()  # Создаем копию для рисования
                 cv2.namedWindow('Image')
                 cv2.setMouseCallback('Image', draw_circle)
 
@@ -108,6 +110,7 @@ def massProcessing():
                 writer = csv.writer(Kf, delimiter=';')
                 print(fileNames[i])
                 img = cv2.imread(fileNames[i])
+                temp_img = img.copy()  # Создаем копию для рисования
                 cv2.namedWindow('Image')
                 cv2.setMouseCallback('Image', draw_circle)
 
@@ -173,21 +176,24 @@ points = []  # Список точек для рисования контура
 
 # Функция для ручного рисования
 def draw_circle(event, x, y, flags, param):
-    global ix, iy, drawing, points, img
+    global drawing, points, img, temp_img
 
     if event == cv2.EVENT_LBUTTONDOWN:
         drawing = True
-        ix, iy = x, y
-        points.append((x, y))
+        points = [(x, y)]  # Начинать с текущей позиции
 
     elif event == cv2.EVENT_MOUSEMOVE:
         if drawing:
+            # Создаем временное изображение для рисования
+            img_copy = temp_img.copy()
             points.append((x, y))
+            cv2.polylines(img_copy, [np.array(points)], isClosed=False, color=(0, 255, 0), thickness=2)
+            cv2.imshow('Image', img_copy)
 
     elif event == cv2.EVENT_LBUTTONUP:
         drawing = False
         points.append((x, y))
-        cv2.polylines(img, [np.array(points)], isClosed=True, color=(0, 255, 0), thickness=2)
+        cv2.polylines(img, [np.array(points)], isClosed=False, color=(0, 255, 0), thickness=2)
         cv2.imshow('Image', img)
 
 
